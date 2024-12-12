@@ -1,0 +1,114 @@
+{% extends "main.html" %}
+
+{% block style %}
+
+:root {
+    --base-color: #2b3248;
+    --light-shade: #3A3F58;
+    --lighter-shade: #DDE1F0;
+    --dark-shade: #2B2E3E;
+    --accent-color: #25ad9e;
+    --text-light: #FFFFFF;
+    --text-dark: #A9B1C8;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: var(--base-color);
+    color: var(--text-dark);
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .form-container {
+    background-color: var(--light-shade);
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    height:auto;
+    max-width: 500px;
+  }
+  
+  h1 {
+    color: var(--text-light);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  label {
+    display: block;
+    margin: 10px 0 5px;
+    color: var(--lighter-shade);
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--dark-shade);
+    border-radius: 4px;
+    background-color: var(--dark-shade);
+    color: var(--text-light);
+  }
+  
+  input[type="text"]:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px var(--accent-color);
+  }
+  
+  textarea {
+    resize: none;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: var(--accent-color);
+    border: none;
+    border-radius: 4px;
+    color: var(--text-light);
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #209d8f;
+  }
+  
+{% endblock %}
+
+{% block content %}
+
+  <div class="form-container">
+    <h1>Create a Blog</h1>
+    <div class="forms-box" style= "display:flex;align-tems:center;justify-content:center;">
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="form-container-2">
+        <label for="blog-topic">Blog Topic : </label>
+        <input type="text" id="blog-topic" name="blog-topic" placeholder="Enter blog topic" required>
+
+        <label for="blog-body">Blog Body : </label>
+        <textarea id="blog-body" style="margin:10px;" name="blog-body" rows="10" placeholder="Write your blog content here..." required></textarea>
+        {{forms.as_p}}
+        </div>        
+        <button class="btn btn-primary" type="submit">Submit Blog</button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

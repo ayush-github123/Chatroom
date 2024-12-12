@@ -1,0 +1,101 @@
+{% extends 'main.html' %} 
+
+{% block content %}
+
+<style>
+    .room-container {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 20px;
+    }
+    a{
+        color:red;
+    }
+
+    /* Basic border for the comment section */
+    .comment-wrapper {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 20px;
+        margin-left:45px;
+        margin-right:45px;
+    }
+
+    /* Basic border for participants section */
+    .participants-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top:100px;
+        margin-right:20px;
+    }
+
+</style>
+
+<div class="room-container">
+    <div>
+        <h1 class="text-white" style="margin: 15px;">
+            {{room.name}}
+        </h1>
+        <br />
+        {% comment %}
+        <h3 class="text-white">HOST : @{{room.host}}</h3>
+        <br />
+        {% endcomment %}
+        
+        <p class="text-white" style="margin: 0px 15px 0px 15px;">
+            {{room.description}}
+        </p>
+        
+        <hr style="color: white; height: 10px;" />
+        
+        <div class="comment-wrapper">
+            <h3 style="margin: 10px 65px 10px 65px;">Conversation</h3>
+            
+            {% for message in room_messages %}
+            <div class="comment" style="margin: 0px 65px 0px 65px;">
+                {% comment %}
+                message.created | timesince is used to display the time
+                since the message was created
+                {% endcomment %}
+                
+                <small style="margin: 0px 15px 0px 45px; color: pink;">
+                    @{{message.user}}, {{message.created | timesince}} ago
+                </small>
+                
+                <p style="margin: 0px 15px 0px 45px; font-size: 20px;">
+                    {{message.body}}
+                </p>
+                {% if request.user == message.user %}
+                <a href="{% url 'delete-message' message.id %}" style="margin: 0px 15px 0px 45px;">Delete</a>
+                {% endif %}
+                <br />
+                <hr style="height: 2px;" />
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if request.user.is_authenticated %}
+        <div class="comment-form" style="margin: 0px 65px 0px 65px;">
+            <form action="{% url 'room' room.id %}" method="post">
+                {% csrf_token %}
+                <input
+                    type="text"
+                    class="form-control"
+                    id="message"
+                    name="message_body"
+                    placeholder="Type your message..."
+                />
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="participants-box">
+        <h3 style="margin: 10px 15px; text-align:center;text-decoration:underline;">Participants</h3>
+        {% for user in room_participants %}
+            <h5 style="margin:20px; ">@{{user.username}}</h5>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+
+<style>
+    
+.browseTopics {
+    background-color: var( --light-shade ); /* Cool dark gray */
+    color: #f0f0f0; /* Light gray for text */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #3a3d41;
+    height: 80vh;
+
+}
+
+.browseTopics h2 {
+    text-align: center;
+    color: #DDE1F0; /* Soft green for section titles */
+}
+
+.browseTopics a{
+    color: #FF6F61; 
+    font-weight: bold;
+}
+
+</style>
+
+<div class="browseTopics">
+    <h2>Browse Topics</h2>
+    <hr>
+    <div>
+        <a href="{% url 'roomDisplay' %}">All</a><br><br>
+    </div>
+    {% for topic in topics %}
+    <div>
+        <a href="{% url 'roomDisplay' %}?q={{ topic.name }}">{{ topic.name }}</a><br><br>
+    </div>
+    {% endfor %}
+</div>

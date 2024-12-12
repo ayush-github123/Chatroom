@@ -1,0 +1,89 @@
+<style>
+    .room-main-container {
+        height: 80vh; /* Ensure the main container has enough height */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .room-container {
+        overflow-y: auto; /* Enable vertical scroll */
+        flex-grow: 1; /* Make sure it fills the remaining space in room-main-container */
+        height: calc(80vh - 100px); /* Adjust height for scrolling */
+    }
+
+    /* For WebKit browsers (optional, if you want to hide the scrollbar) */
+    .room-container::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .room-container::-webkit-scrollbar-thumb {
+        background: var(--lighter-shade);
+        border-radius: 10px;
+    }
+
+    .room-container::-webkit-scrollbar-thumb:hover {
+        background: var(--lighter-shade);
+    }
+
+    .rooms {
+        background-color: var( --light-shade );
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        border: 1px solid #3a3d41;
+    }
+
+    .rooms h1 a {
+        color: #DDE1F0 !important;
+    }
+
+    .rooms p a{
+        color: var(--accent-color);
+        font-weight: 900;
+    }
+
+    .rooms  i {
+        color:  white !important;
+    }
+
+    .rooms hr {
+        border: 0.5px solid #444;
+    }
+
+    a {
+        text-decoration: none !important;
+    }
+</style>
+
+<div class="room-main-container">
+    <div class="tab-above" style="display: flex; justify-content: space-between; margin: 10px;">
+        <small style="margin: 10px; color: #f0f0f0;">Total {{ room_count }} Rooms Available</small><br><br>
+        <a href="{% url 'create-room' %}" style="text-decoration: none; color: white;">
+            <button class="btn " style="background-color: var(--accent-color);color:white;"><i class="fas fa-plus"></i> Create Room</button>
+        </a>
+    </div>
+
+    <div class="room-container">
+        {% comment %} 
+        {% if user.is_authenticated %}
+        <h5 style="margin: 10px; text-align: center;">Welcome, {{ user.username }}</h5><br><br>
+        {% endif %}
+        {% endcomment %}
+
+        {% for room in rooms %}
+        <div class="rooms">
+            <h1><a href="{% url 'room' room.id %}">{{ room.name }}</a></h1>
+            <p>HOST : <a href="{% url 'user-profile' room.host.id %}">@{{ room.host }}</a></p>
+            <small>{{ room.description|truncatechars:150 }}...</small>
+            <div style="display:flex; justify-content:end; gap:20px">
+                {% if request.user == room.host %}
+                <a href="{% url 'update-room' room.id %}"><i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'delete-room' room.id %}"><i class="fas fa-trash"></i>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

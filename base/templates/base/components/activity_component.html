@@ -1,0 +1,70 @@
+<style>
+.recent-activity {
+    background-color: var( --light-shade ); /* Cool dark gray */
+    color: #DDE1F0; /* Light gray for text */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #3a3d41;
+    overflow:scroll;
+    height: 80vh;
+
+}
+
+.recent-activity::-webkit-scrollbar {
+    display:none;
+}
+
+.recent-activity h2 {
+    text-align: center;
+    color: #DDE1F0; /* Soft green for section titles */
+}
+
+.recent-activity a {
+    color: var(--accent-color); /* Calm blue for links */
+    font-weight: bold;
+}
+
+.recent-activity div {
+    background-color: var(--base-color); /* Slightly darker for activity boxes */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: #d1d1d1; /* Light gray for text */
+}
+
+.recent-activity div strong {
+    color: var(--accent-color); /* Orange for highlighted topic names */
+}
+.message-body {
+    background-color: #24282e; /* Slightly darker gray for message body */
+    color: #f0f0f0; /* Light gray for text */
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+</style>
+
+{% block content %}
+<div class="recent-activity">
+    <h2>Recent Activity</h2>
+    <hr>
+    {% for message in room_messages %}
+    <div>
+        <small><a href="{% url 'user-profile' message.user.id %}">@{{ message.user }}</a> - {{ message.created|timesince }} ago</small>
+        <br>
+        <small>Replied to the post: <strong>{{ message.room.topic }}</strong></small>
+        <br>
+        <div class="message-body">
+            <small>"{{ message.body }}"</small>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

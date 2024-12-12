@@ -1,0 +1,109 @@
+{% extends "main.html" %}
+
+{% block style %}
+/* Body background */
+body {
+    background-color: var(--base-color);
+    font-family: Arial, sans-serif;
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+}
+
+/* Centering form container */
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--light-shade);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--dark-shade);
+}
+
+/* Form heading */
+.heading {
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: var(--accent-color);
+    margin-bottom: 30px;
+}
+
+/* Form elements */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Labels for form elements */
+form label {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+}
+
+/* Input fields */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid var(--dark-shade);
+    border-radius: 5px;
+    background-color: var(--lighter-shade);
+    color: var(--text-dark);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    background-color: var(--light-shade);
+}
+
+/* Submit button */
+input[type="submit"] {
+    padding: 12px;
+    font-size: 16px;
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #1f8d72;
+}
+
+/* Form error styling */
+form .error {
+    color: #ff4c4c;
+    font-size: 12px;
+    margin-top: 5px;
+}
+{% endblock %}
+
+
+{% block content %}
+    <div class="heading">
+        <h2>Create Room</h2>
+    </div>
+
+    <div class="form-container">
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <h5> {{form.as_p}} </h5>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+{% endblock %}

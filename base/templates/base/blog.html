@@ -1,0 +1,182 @@
+{% extends "main.html" %}
+
+{% block style %}
+:root {
+    --base-color: #2b3248;
+    --light-shade: #3A3F58;
+    --lighter-shade: #DDE1F0;
+    --dark-shade: #2B2E3E;
+    --accent-color: #25ad9e;
+    --text-light: #FFFFFF;
+    --text-dark: #A9B1C8;
+    --hover-color: #209d8f;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--base-color);
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    flex-direction: column;
+}
+
+.blog-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--light-shade);
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.blog-container a {
+    text-decoration: none;
+}
+
+.blog-container .btn {
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.blog-container .btn i {
+    margin-right: 10px;
+}
+
+.blog-container .btn:hover {
+    background-color: var(--hover-color);
+}
+
+.blog-post {
+    background-color: var(--dark-shade);
+    color: var(--text-light);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.blog-post h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.blog-post span {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--lighter-shade);
+}
+
+.blog-post span p {
+    color: var(--text-light);
+    font-weight: bold;
+}
+
+.blog-post p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+    .blog-container {
+        padding: 10px;
+    }
+
+    .blog-post h2 {
+        font-size: 1.5rem;
+    }
+
+    .blog-post p {
+        font-size: 1rem;
+    }
+
+    .btn a:hover{
+        text-decoration: none;
+        color: white !important;
+    }
+}
+
+.read-more-btn {
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.read-more-btn:hover {
+    background-color: var(--hover-color);
+}
+{% endblock %}
+
+{% block content %}
+    <div class="blog-container">
+        <a href="{% url 'Createblog' %}">
+            <button class="btn"><i class="fas fa-plus"></i> Create Blog</button>
+        </a>
+
+        <!-- Blog Posts -->
+        {% for blog in blogs %}
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item" style="margin:10px;">
+                <h2 class="accordion-header">
+                    <!-- Unique collapse ID for each blog post -->
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ blog.id }}" aria-expanded="false" aria-controls="collapse{{ blog.id }}">
+                        {{ blog.name }}
+                    </button>
+                </h2>
+                <div id="collapse{{ blog.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body" style="margin:5px;">
+                        <!-- Display only first 100 characters initially -->
+                        {{ blog.body|truncatechars:100 }}
+                        <div class="collapse-content" style="display:none;">
+                            <p>{{ blog.body }}</p>
+                        </div>
+                        <!-- Read More button that expands to reveal full content -->
+                        <button class="read-more-btn" onclick="toggleBlogContent({{ blog.id }})">Read More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function toggleBlogContent(blogId) {
+            const fullContent = document.querySelector(`#collapse${blogId} .collapse-content`);
+            const btn = document.querySelector(`#collapse${blogId} .read-more-btn`);
+
+            if (fullContent.style.display === "none" || fullContent.style.display === "") {
+                fullContent.style.display = "block";
+                btn.innerText = "Read Less";
+            } else {
+                fullContent.style.display = "none";
+                btn.innerText = "Read More";
+            }
+        }
+    </script>
+{% endblock %}

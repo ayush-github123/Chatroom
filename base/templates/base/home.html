@@ -1,0 +1,33 @@
+{% extends 'main.html' %}
+
+{% block style %}
+.home-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
+    margin: 20px;
+    overflow:hidden;
+    padding: 0 100px;
+}
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+
+    <!-- Browse Topics -->
+    
+    {% include "base/components/topics_component.html" %}
+    
+
+    <!-- Rooms -->
+    
+    {% include "base/components/room_component.html" %}
+    
+
+    <!-- Recent Activity -->
+
+    {% include "base/components/activity_component.html" %}
+    
+
+</div>
+{% endblock %}
